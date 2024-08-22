@@ -1,4 +1,9 @@
+import os
+import sys
 from typing import Union
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from sv.params import Params as ParamsClassFromSvExample
 
 
 class BaseParams:
@@ -27,19 +32,5 @@ class BaseParams:
         return str(self.fields_for_object_serialization())
 
 
-class Params(BaseParams):
-    number: Union[int, None] = None
-    string: Union[str, None] = None
-    raw_bytes: Union[bytes, None] = None
-
+class Params(BaseParams, ParamsClassFromSvExample):
     __fields__ = ("number", "string", "raw_bytes")
-
-    def __init__(
-        self,
-        number: Union[int, None] = None,
-        string: Union[str, None] = None,
-        raw_bytes: Union[bytes, None] = None,
-    ):
-        self.number = number
-        self.string = string
-        self.raw_bytes = raw_bytes
