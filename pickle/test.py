@@ -22,10 +22,10 @@ if __name__ == "__main__":
         RAW_BYTES_VALUE: bytes = facet[RAW_BYTES]
 
         # Create
-        obj_for_serializing: Params = Params.new(
-            NUMBER_VALUE,
-            STRING_VALUE,
-            RAW_BYTES_VALUE,
+        obj_for_serializing: Params = Params(
+            number=NUMBER_VALUE,
+            string=STRING_VALUE,
+            raw_bytes=RAW_BYTES_VALUE,
         )
 
         # Serialize

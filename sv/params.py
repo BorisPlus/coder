@@ -1,21 +1,20 @@
+from typing import Union
+
+
 class Params:
-    number: int
-    string: str
-    raw_bytes: bytes
+    number: Union[int, None] = None
+    string: Union[str, None] = None
+    raw_bytes: Union[bytes, None] = None
 
-    __slots__ = ("number","string",  "raw_bytes")
-
-    @classmethod
-    def new(cls, number: int, string: str, raw_bytes: bytes):
-        return cls( number, string, raw_bytes)
-
-    def __init__(self, number: int, string: str, raw_bytes: bytes):
+    def __init__(
+        self,
+        number: Union[int, None] = None,
+        string: Union[str, None] = None,
+        raw_bytes: Union[bytes, None] = None,
+    ):
         self.number = number
         self.string = string
         self.raw_bytes = raw_bytes
 
-    def fields_values(self) -> tuple:
-        return tuple(getattr(self, x) for x in self.__slots__)
-
     def __str__(self) -> str:
-        return str(self.fields_values())
+        return str(f"{self.number}, {self.number}, {self.raw_bytes}")

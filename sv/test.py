@@ -1,17 +1,19 @@
-from typing import Any, Union
 import os
 import sys
+from typing import Any, Union
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from facets import facets, RAW_BYTES, NUMBER, STRING
 
 from params import Params
+
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from facets import facets, RAW_BYTES, NUMBER, STRING
+
 
 DELIMITER = "\x00"
 
 
-def encoder(
+def encode(
     item: Union[
         bytes,
         int,
@@ -27,7 +29,7 @@ def encoder(
     raise Exception("Invalid instance")
 
 
-def decoder(item: str, type):
+def decode(item: str, type):
     if type == str:
         return item
     if type == int:
@@ -48,23 +50,30 @@ if __name__ == "__main__":
         RAW_BYTES_VALUE: bytes = facet[RAW_BYTES]
 
         # Create
-        obj_for_serializing: Params = Params.new(
-            NUMBER_VALUE,
-            STRING_VALUE,
-            RAW_BYTES_VALUE,
+        obj_for_serializing: Params = Params(
+            number=NUMBER_VALUE,
+            string=STRING_VALUE,
+            raw_bytes=RAW_BYTES_VALUE,
         )
 
         # Serialize FIELDS
         serialized_fields = DELIMITER.join(
-            [encoder(i) for i in obj_for_serializing.fields_values()]
+            [
+                encode(i)
+                for i in [
+                    obj_for_serializing.number,
+                    obj_for_serializing.string,
+                    obj_for_serializing.raw_bytes,
+                ]
+            ]
         )
 
         # Deserialize FIELDS
         deserialized_fields = serialized_fields.split(DELIMITER)
-        deserialized_object: Params = Params.new(
-            number=decoder(deserialized_fields[0], int),
-            string=decoder(deserialized_fields[1], str),
-            raw_bytes=decoder(deserialized_fields[2], bytes),
+        deserialized_object: Params = Params(
+            number=decode(deserialized_fields[0], int),
+            string=decode(deserialized_fields[1], str),
+            raw_bytes=decode(deserialized_fields[2], bytes),
         )
 
         # Check.

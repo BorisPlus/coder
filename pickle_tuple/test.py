@@ -1,14 +1,12 @@
 import os
+import pickle
 import sys
 
+
+from params import Params
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-
-import pickle
-
-
 from facets import facets, RAW_BYTES, NUMBER, STRING
-from sv.params import Params
 
 
 if __name__ == "__main__":
@@ -22,22 +20,24 @@ if __name__ == "__main__":
         RAW_BYTES_VALUE: bytes = facet[RAW_BYTES]
 
         # Create
-        obj_for_serializing: Params = Params.new(
-            NUMBER_VALUE,
-            STRING_VALUE,
-            RAW_BYTES_VALUE,
+        obj_for_serializing: Params = Params(
+            number=NUMBER_VALUE,
+            string=STRING_VALUE,
+            raw_bytes=RAW_BYTES_VALUE,
         )
 
         # Serialize
         serialized_fields = pickle.dumps(
-            obj_for_serializing.fields_values(),
+            obj_for_serializing.fields_for_object_serialization(),
             protocol=3,
             fix_imports=False,
         )
 
         # Deserialize
         deserialized_fields = pickle.loads(serialized_fields)
-        deserialized_object: Params = Params.new(*deserialized_fields)
+        deserialized_object: Params = Params.deserialization_object_from_fields(
+            deserialized_fields
+        )
 
         # Check.
         assert deserialized_object.number == NUMBER_VALUE
