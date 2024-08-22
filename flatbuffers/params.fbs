@@ -1,0 +1,9 @@
+namespace params;
+
+table Params {
+  number: int;
+  string: string;
+  raw_bytes: [byte];
+}
+
+root_type Params;

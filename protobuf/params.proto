@@ -1,0 +1,9 @@
+syntax = "proto2";
+
+package params;
+
+message Params {
+  required int32  number = 1;
+  required string string = 2;
+  required bytes  raw_bytes = 3;
+}
